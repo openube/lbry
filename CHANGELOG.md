@@ -15,6 +15,7 @@ at anytime.
 ### Added
   * Added validation of currencies.
   * Added blob_announce API command
+  * Added `reflector` parameter to `stream_reflect` command
 
 ### Fixed
   * Fixed incorrect formatting of "amount" fields
@@ -25,8 +26,9 @@ at anytime.
   *
 
 ### Changed
-  *
-  *
+  * Renamed `reflect` command to `stream_reflect`
+  * Allow IP addresses to be configured as reflector servers, not just host names.
+  * Return list of blobs that were reflected from `stream_reflect`
 
 ### Added
   *
