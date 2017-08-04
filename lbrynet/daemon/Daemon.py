@@ -2412,22 +2412,27 @@ class Daemon(AuthJSONRPCServer):
         return d
 
     @defer.inlineCallbacks
-    def jsonrpc_reflect(self, sd_hash):
+    def jsonrpc_stream_reflect(self, sd_hash, reflector=None):
         """
         Reflect a stream
 
         Usage:
-            reflect (<sd_hash> | --sd_hash=<sd_hash>)
+            stream_reflect (<sd_hash> | --sd_hash=<sd_hash>)
+                           [<reflector> | --reflector=<reflector>]
+
+        Options:
+            <reflector> | --reflector=<reflector>   : reflector server, ip address or url
+                                                      by default choose a server from the config
 
         Returns:
-            (bool) true if successful
+            (list) list of blobs reflected
         """
 
         lbry_file = yield self._get_lbry_file(FileID.SD_HASH, sd_hash, return_json=False)
         if lbry_file is None:
             raise Exception('No file found for give sd hash')
-        yield reupload.reflect_stream(lbry_file)
-        defer.returnValue("Reflect success")
+        results = yield reupload.reflect_stream(lbry_file, reflector_server=reflector)
+        defer.returnValue(results)
 
     @defer.inlineCallbacks
     @AuthJSONRPCServer.flags(needed="-n", finished="-f")
